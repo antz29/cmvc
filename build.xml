@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<project basedir="." default="build">
+	
+	<property name="src" location="src"/>
+	<property name="build" location="build"/>
+	
+	<property name="jscompjar" location="tools/compiler.jar" />
+	<property name="mcpp" location="tools/mcpp.exe" />
+	
+	<taskdef name="jscomp"
+  		classname="com.google.javascript.jscomp.ant.CompileTask"
+  		classpath="${jscompjar}"
+  	/>
+	  	
+  	<target name="clean">
+  		<delete dir="${build}" />
+  	</target>
+  	
+  	<target name="init" depends="clean">
+  		<mkdir dir="${build}"/>
+  	</target>
+  	  	
+	<target name="concat" depends="init">
+	    <concat destfile="${build}/cmvc.js">
+	    	<filelist dir="${src}">   			
+    			<!-- Dominpes -->
+    			<file name="lib/dominoes/dominoes.js" />
+    			
+    			<!-- jQuery + plugins -->
+    			<file name="lib/jquery/jquery.js" />
+    			<file name="lib/jquery/plugins/bbq.js" />
+    			
+    			<!-- Underscore + plugins -->
+    			<file name="lib/underscore/underscore.js" />
+    			<file name="lib/underscore/plugins/inflection.js" />
+    			<file name="lib/underscore/plugins/memorize.js" />
+    			<file name="lib/underscore/plugins/queue.js" />
+    			<file name="lib/underscore/plugins/strings.js" />
+    			
+    			<!-- Mustache -->
+    			<file name="lib/mustache/mustache.js" />
+    			
+				<!-- Couch -->
+    			<file name="data/document.js" />
+    			<file name="data/view.js" />
+    			
+    			<!-- MVC -->
+				<file name="mvc/controller.js" />
+    			<file name="mvc/action.js" />
+    			
+    			<!-- Template -->
+				<file name="template/template.js" />
+
+    			<!-- Core -->
+				<file name="cmvc.js" />
+    		</filelist>
+	    </concat>
+	</target>
+  	
+	  	
+  	<target name="compile" depends="concat">
+		<jscomp compilationLevel="simple" warning="quiet" debug="false" output="${build}/cmvc.min.js">
+	  		<sources dir="${build}">
+	    		<file name="cmvc.js" />
+	  		</sources>
+		</jscomp>
+  	</target>
+  	
+  	<target name="build" depends="compile" />  	
+</project>
