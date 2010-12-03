@@ -1,3 +1,7 @@
+// #PACKAGE: cmvc
+// #MODULE: controller
+// #DEPENDS: lib:jquery
+
 var CMVC = CMVC || {};
 
 (function($) {

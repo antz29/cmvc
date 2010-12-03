@@ -1,7 +1,11 @@
+// #PACKAGE: cmvc
+// #MODULE: core
+// #DEPENDS: lib:jquery
+
 var CMVC = CMVC || {};
 
 (function( window, $, undefined ) {
-	
+
 	CMVC.options = {
 		'target' : null,
 		'loading_indicator' : null,
@@ -13,7 +17,8 @@ var CMVC = CMVC || {};
 	};
 	
 	var observers = {};
-	
+	var first_load = true;
+
 	CMVC.on = function(event,func,context) {
 		if (!observers[event]) observers[event] = {};		
 		observers[event][func.toString()] = {func : func, context : context}; 
@@ -21,7 +26,8 @@ var CMVC = CMVC || {};
 	
 	CMVC.trigger = function(event,data,callback) {
 		if (!observers[event]) {
-			if (_.isFunction(callback)) callback(); 
+			if (_.isFunction(callback)) { return callback(true); }
+			return;
 		}
 		var ret = true;
 		var remain = 0;
@@ -74,7 +80,7 @@ var CMVC = CMVC || {};
 				CMVC.options.loading_indicator.height(load_height).show();
 			},CMVC.options.load_indicator_timeout);
 		}
-		
+
 		dominoes(controller,function () {
 			var name =_.camelize(controller);
 			controller = new CMVC.Controllers[name]();
@@ -94,7 +100,7 @@ var CMVC = CMVC || {};
 						CMVC.options.target.html(contents);
 						
 						if (CMVC.options.loading_indicator) {
-							CMVC.options.loading_indicator.fadeOut();	
+							CMVC.options.loading_indicator.fadeOut();
 						}
 						
 						first_load = false;

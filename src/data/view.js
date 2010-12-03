@@ -1,3 +1,7 @@
+// #PACKAGE: couch
+// #MODULE: view
+// #DEPENDS: lib:jquery
+
 var CMVC = CMVC || {};
 
 (function($) {
