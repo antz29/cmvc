@@ -5,7 +5,7 @@
 var CMVC = CMVC || {};
 
 (function($) {
-	
+
 	CMVC.CouchView = function(database,design,view) {
 		var that = this;
 		var url = database + '/_design/' + encodeURIComponent(design) + '/_view/' + encodeURIComponent(view);		
@@ -70,7 +70,7 @@ var CMVC = CMVC || {};
 			});
 			return ret;
 		};
-		
+
 	};
 	
 }(jQuery));

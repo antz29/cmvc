@@ -9,10 +9,11 @@ var CMVC = CMVC || {};
 	CMVC.Action = function() {
 				
 		var name = name;
+		var controller = false;
+
 		var view = {}; 
 		var template = false; 
-		var state = {};
-		var module = false;
+		var state = {};		
 		
 		this.getName = function() {
 			return name;
@@ -31,30 +32,30 @@ var CMVC = CMVC || {};
 		};
 		
 		this.setTemplate = function(new_template) {
-                        template = new CMVC.Template('js/views/' + new_template + '.mst');
+                       	template = new CMVC.Template(CMVC.Action.options.view_path + new_template + '.tpl');
 		};
 		
 		this.getState = function() {
 			return state;
 		};
 		
-		this.getModule = function() {
-			return module;
+		this.getController = function() {
+			return controller;
 		};
 		
-		this.setModule = function(set_module) {
-			module = set_module;
+		this.setController = function(set_controller) {
+			controller = set_controller;
 		};
 		
 		this.go = function(callback) { callback(); };
 		this.postRender = function() { }; 
 		
 		this.exec = function(new_state,callback) {
-			this.setTemplate(_.underscore(this.getModule().getName()) + '/' + _.underscore(this.getName()));
+			this.setTemplate(_.underscore(this.getController().getName()) + '/' + _.underscore(this.getName()));
 			
 			state = new_state;
 
-			this.go(function() {
+			this.go(function() {				
 				template.render(view,function(contents) {
 					callback(contents);
 				});
@@ -62,5 +63,9 @@ var CMVC = CMVC || {};
 		};
 		
 	};
-	
+
+	CMVC.Action.options = {
+		'view_path' : 'js/views/'
+	};	
+
 }(jQuery));

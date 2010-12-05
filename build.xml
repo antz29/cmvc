@@ -19,19 +19,17 @@
     <target name="jsbuilder">
 	    <jsbuilder dir="${build.dir}" pattern="cmvc.min.js">
 			<source path="${src.dir}" />
-	        
+
 	        <module package='lib' name='dominoes' file='${lib.dir}/dominoes/dominoes.js' />
 		    
 	        <module package='lib' name='jquery' file='${lib.dir}/jquery/jquery.js' />
-		    <module package='lib' name='jquery.bbq' file='${lib.dir}/jquery/plugins/bbq.js' depends='jquery' />
+	    	<module package='lib' name='jquery.bbq' file='${lib.dir}/jquery/plugins/bbq.js' depends='jquery' />
 	        
 	        <module package='lib' name='underscore' file='${lib.dir}/underscore/underscore.js' />
 	        <module package='lib' name='underscore.inflection' file='${lib.dir}/underscore/plugins/inflection.js' depends='underscore' />
 	        <module package='lib' name='underscore.memorize' file='${lib.dir}/underscore/plugins/memorize.js' depends='underscore' />
 	        <module package='lib' name='underscore.queue' file='${lib.dir}/underscore/plugins/queue.js' depends='underscore' />
 	        <module package='lib' name='underscore.strings' file='${lib.dir}/underscore/plugins/strings.js' depends='underscore' />
-	        
-	        <module package='lib' name='mustache' file='${lib.dir}/mustache/mustache.js' />
 		</jsbuilder>
     </target>
 

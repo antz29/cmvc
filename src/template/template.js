@@ -11,15 +11,15 @@ var CMVC = CMVC || {};
 	CMVC.Template = function(template) {
 		
 		var that = this;
-		var tcontents = false;	
+		var compiled = false;
 		var loading = false;
-	
+
 		var queue = [];
 
-		function callQueue(tcontents) {
+		function callQueue(compiled) {
 			var cb;
 			while (cb = queue.shift()) {
-				cb.c.apply(that,[Mustache.to_html(tcontents,cb.v)]);
+				cb.c.apply(that,[compiled(cb.v)]);
 			}
 		}
 
@@ -31,17 +31,18 @@ var CMVC = CMVC || {};
 			}
 		
 			queue.push({v:view,c:callback});
+
 			if (loading) return;
-			if (tcontents) return callQueue(tcontents);
+			if (compiled) return callQueue(compiled);
 			if (template_cache[template]) return callQueue(template_cache[template]);
 			loading = true;
 			$.ajax({
                         	url : template,
                                 success : function(template_contents) {
-					tcontents = template_contents;
-					template_cache[template] = tcontents;
+					compiled = _.template(template_contents);
+					template_cache[template] = compiled;
 					loading = false;
-					callQueue(tcontents);
+					callQueue(compiled);
                                 }
                         }); 
 		}			

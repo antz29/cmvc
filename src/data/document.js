@@ -5,28 +5,28 @@
 var CMVC = CMVC || {};
 
 (function($) {
-	
+
 	CMVC.CouchDocument = function(database,doc_id) {
-		
-		var that = this;	
+
+		var that = this;
 		var revision = false;
 		var create = true;
 		this.doc = {};
-		
+
 		if (doc_id && !_.isString(doc_id)) {
 			this.doc = doc_id;
 			revision = this.doc._rev;
 			delete this.doc._rev;
-			
-			create = false;			
+
+			create = false;
 		}
-		
+
 		this.getRevision = function() {
 			return revision;
 		};
-		
+
 		this.load = function(load_doc,callback) {
-			
+
 			if (_.isFunction(load_doc)) {
 				callback = load_doc;
 				load_doc = doc_id;
@@ -35,9 +35,9 @@ var CMVC = CMVC || {};
 				callback = function() {};
 				load_doc = doc_id;
 			};
-			
+
 			if (!load_doc) throw("No document id specified to load");
-			
+
 			$.ajax({
 				url : database + '/' + encodeURIComponent(load_doc),
 				type : 'get',
@@ -53,12 +53,12 @@ var CMVC = CMVC || {};
 						throw "Failed to retrieve document. Status: " + xr.status + ' - ' + xr.statusText;
 					}
 				}
-			});	
+			});
 		};
-		
+
 		this.save = function(callback) {
 			var doc = jQuery.extend(true, {}, this.doc);
-			
+
 			if (!create) {
 				if (!this.doc._id) return;
 				doc._rev = revision;
@@ -66,7 +66,7 @@ var CMVC = CMVC || {};
 			else {
 				doc._id = doc_id;
 			}
-			
+
 			$.ajax({
 				url : database + '/' + encodeURIComponent(doc_id),
 				type : 'put',
@@ -84,14 +84,14 @@ var CMVC = CMVC || {};
 				}
 			});
 		};
-		
+
 		this.del = function(callback) {
 			if (!this.doc._id) {
 				return that.load(function() {
 					that.del(callback);
 				});
 			};
-			
+
 			$.ajax({
 				url : database + '/' + encodeURIComponent(this.doc._id) + '?rev=' + revision,
 				type : 'delete',
@@ -108,7 +108,7 @@ var CMVC = CMVC || {};
 				}
 			});
 		};
-		
+
 	};
-	
+
 }(jQuery));

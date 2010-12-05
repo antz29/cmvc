@@ -23,15 +23,13 @@ var CMVC = CMVC || {};
 		this.postAction = function() {};
 		
 		this.callAction = function(action,state,callback) {
-			var mod = _.underscore(name) + '.' + action;
+			var cname = _.underscore(name);
+			var mod = 'controller' + '.' + cname + '.' + action;
 			dominoes(mod,function() {
-				action = _.camelize(action);	
-				if (!CMVC[name][action]) throw (name + '.' + action + " is not defined.");
+				var actobj = CMVC.getAction(cname,action);	
+				if (!actobj) throw (name + '.' + action + " is not defined.");
 				
 				that.preAction(function() {
-					var actobj = new CMVC[name][action]();			
-					actobj.setModule(that);
-					actobj.setName(action);
 					actobj.exec(state,function(contents) {
 						callback(contents);
 						actobj.postRender(function() {
